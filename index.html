@@ -1,1 +1,59 @@
 meu boletim
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Deixa o site responsivo em celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boletim Digital</title>
+  <!-- Conecta o CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+  <header class="cabecalho">
+    <h1>Boletim Digital</h1>
+    <p class="subtitulo">9º Ano — Estudante Exemplo</p>
+  </header>
+
+  <!-- ÁREA DOS CARDS DE RESUMO -->
+  <!-- Os cards serão criados pelo JavaScript dentro desta section -->
+  <section class="resumo" id="areaResumo">
+    <!-- Preenchido automaticamente pelo script.js -->
+  </section>
+
+  <!-- ÁREA DA TABELA -->
+  <section class="tabela-container">
+    <h2>Notas por Disciplina</h2>
+
+    <!-- Tabela com cabeçalho fixo; as linhas vêm do JavaScript -->
+    <div class="tabela-scroll">
+      <table class="boletim">
+        <thead>
+          <tr>
+            <th>Disciplina</th>
+            <th>1º Tri</th>
+            <th>2º Tri</th>
+            <th>3º Tri</th>
+            <th>Média</th>
+            <th>Faltas</th>
+            <th>Situação</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabela">
+          <!-- Preenchido automaticamente pelo script.js -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- RODAPÉ -->
+  <footer class="rodape">
+    <p>Projeto escolar — dados fictícios para demonstração.</p>
+  </footer>
+
+  <!-- Conecta o JavaScript no final para garantir que o HTML já carregou -->
+  <script src="script.js"></script>
+</body>
+</html>
