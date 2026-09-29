@@ -1,59 +1,235 @@
-meu boletim
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <!-- Deixa o site responsivo em celular -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boletim Digital</title>
-  <!-- Conecta o CSS -->
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+/* =========================================================
+   BOLETIM DIGITAL - 9º ANO
+   Dados fictícios para demonstração.
+   ========================================================= */
 
-  <!-- CABEÇALHO -->
-  <header class="cabecalho">
-    <h1>Boletim Digital</h1>
-    <p class="subtitulo">9º Ano — Meu Boletim</p>
-  </header>
+/* ---------------------------------------------------------
+   CONCEITO: ARRAY e OBJETO
+   - Array = uma lista, representada por [ ... ]
+   - Objeto = um "pacote" com várias informações, { chave: valor }
+   Aqui temos um array de objetos: cada objeto é uma disciplina.
+--------------------------------------------------------- */
+const disciplinas = [
+  { disciplina: "Língua Portuguesa", tri1: "7,9", tri2: "7,8", tri3: null, faltas: [3, 12, 1] },
+  { disciplina: "Matemática", tri1: "6,0", tri2: "6,6", tri3: null, faltas: [7, 17, 2] },
+  { disciplina: "Ciências", tri1: "5,4", tri2: "8,5", tri3: null, faltas: [2, 9, 0] },
+  { disciplina: "História", tri1: "3,9", tri2: "9,0", tri3: null, faltas: [3, 6, 0] },
+  { disciplina: "Geografia", tri1: "6,5", tri2: "5,0", tri3: null, faltas: [4, 8, 1] },
+  { disciplina: "Língua Inglesa", tri1: "6,3", tri2: "2,4", tri3: null, faltas: [6, 2, 0] },
+  { disciplina: "Arte", tri1: "6,7", tri2: "6,0", tri3: null, faltas: [4, 6, 1] },
+  { disciplina: "Educação Física", tri1: "9,3", tri2: "3,3", tri3: null, faltas: [2, 3, 0] },
+  { disciplina: "Educação Digital", tri1: "9,0", tri2: "6,0", tri3: null, faltas: [4, 4, 0] },
+  { disciplina: "Educação Financeira", tri1: "7,5", tri2: "8,4", tri3: null, faltas: [3, 11, 1] },
+  { disciplina: "Rec. Aprend. Matemática", tri1: "4,4", tri2: "5,5", tri3: null, faltas: [4, 4, 0] },
+  { disciplina: "Leitura Rec. Aprend. Lingua Portuguesa", tri1: "7,5", tri2: "8,0", tri3: null, faltas: [4, 2, 0] },
+  { disciplina: "Pensamento Lógico", tri1: null, tri2: "6,0", tri3: null, faltas: [0, 1, 1] },
+  { disciplina: "Literatura Arte e Movimento", tri1: null, tri2: "5,7", tri3: null, faltas: [0, 0, 1] },
+  { disciplina: "Práticas Experimentais", tri1: null, tri2: "8,0", tri3: null, faltas: [0, 0, 0] }
+];
 
-  <!-- ÁREA DOS CARDS DE RESUMO -->
-  <!-- Os cards serão criados pelo JavaScript dentro desta section -->
-  <section class="resumo" id="areaResumo">
-    <!-- Preenchido automaticamente pelo script.js -->
-  </section>
+/* Constante que define a média mínima de referência */
+const MEDIA_MINIMA = 6.0;
 
-  <!-- ÁREA DA TABELA -->
-  <section class="tabela-container">
-    <h2>Notas por Disciplina</h2>
+/* ---------------------------------------------------------
+   CONCEITO: FUNÇÃO
+   Transforma qualquer nota recebida na escala 0 a 10.
+--------------------------------------------------------- */
+function normalizarNota(valor) {
+  if (valor === null || valor === undefined || valor === "") {
+    return null;
+  }
 
-    <!-- Tabela com cabeçalho fixo; as linhas vêm do JavaScript -->
-    <div class="tabela-scroll">
-      <table class="boletim">
-        <thead>
-          <tr>
-            <th>Disciplina</th>
-            <th>1º Tri</th>
-            <th>2º Tri</th>
-            <th>3º Tri</th>
-            <th>Média</th>
-            <th>Faltas</th>
-            <th>Situação</th>
-          </tr>
-        </thead>
-        <tbody id="corpoTabela">
-          <!-- Preenchido automaticamente pelo script.js -->
-        </tbody>
-      </table>
+  if (typeof valor === "string") {
+    valor = valor.replace(",", ".");
+  }
+
+  const numero = Number(valor);
+
+  if (isNaN(numero)) {
+    return null;
+  }
+
+  if (numero >= 0 && numero <= 10) {
+    return numero;
+  }
+
+  if (numero > 10 && numero <= 100) {
+    return numero / 10;
+  }
+
+  return null;
+}
+
+/* ---------------------------------------------------------
+   FUNÇÃO: formatarNota
+   Mostra a nota com 1 casa decimal (ex: 8,5).
+--------------------------------------------------------- */
+function formatarNota(nota) {
+  if (nota === null) {
+    return '<span class="nota-vazia">Ainda não lançada</span>';
+  }
+  return nota.toFixed(1).replace(".", ",");
+}
+
+/* ---------------------------------------------------------
+   FUNÇÃO: calcularMedia
+   Média usando SOMENTE as notas válidas.
+--------------------------------------------------------- */
+function calcularMedia(notas) {
+  const validas = notas.filter(function (n) {
+    return n !== null;
+  });
+
+  if (validas.length === 0) {
+    return null;
+  }
+
+  let soma = 0;
+  validas.forEach(function (n) {
+    soma += n;
+  });
+
+  return soma / validas.length;
+}
+
+/* ---------------------------------------------------------
+   FUNÇÃO: somarFaltas
+--------------------------------------------------------- */
+function somarFaltas(faltas) {
+  let total = 0;
+  faltas.forEach(function (f) {
+    total += f;
+  });
+  return total;
+}
+
+/* ---------------------------------------------------------
+   FUNÇÃO: definirSituacao
+--------------------------------------------------------- */
+function definirSituacao(media) {
+  if (media === null) {
+    return { texto: "Nota ainda não disponível", classe: "situacao-indisponivel" };
+  }
+  if (media >= MEDIA_MINIMA) {
+    return { texto: "Bom desempenho", classe: "situacao-bom" };
+  }
+  return { texto: "Atenção", classe: "situacao-atencao" };
+}
+
+/* ---------------------------------------------------------
+   FUNÇÃO: processarDisciplinas
+--------------------------------------------------------- */
+function processarDisciplinas(lista) {
+  return lista.map(function (item) {
+    const n1 = normalizarNota(item.tri1);
+    const n2 = normalizarNota(item.tri2);
+    const n3 = normalizarNota(item.tri3);
+
+    const media = calcularMedia([n1, n2, n3]);
+    const totalFaltas = somarFaltas(item.faltas);
+    const situacao = definirSituacao(media);
+
+    return {
+      disciplina: item.disciplina,
+      tri1: n1,
+      tri2: n2,
+      tri3: n3,
+      media: media,
+      faltas: totalFaltas,
+      situacao: situacao
+    };
+  });
+}
+
+/* =========================================================
+   CONCEITO: DOM
+   ========================================================= */
+const dadosProcessados = processarDisciplinas(disciplinas);
+
+/* ---------------------------------------------------------
+   FUNÇÃO: preencherTabela
+--------------------------------------------------------- */
+function preencherTabela(dados) {
+  const corpo = document.getElementById("corpoTabela");
+  corpo.innerHTML = "";
+
+  dados.forEach(function (item) {
+    const linha = document.createElement("tr");
+
+    linha.innerHTML = `
+      <td>${item.disciplina}</td>
+      <td>${formatarNota(item.tri1)}</td>
+      <td>${formatarNota(item.tri2)}</td>
+      <td>${formatarNota(item.tri3)}</td>
+      <td>${formatarNota(item.media)}</td>
+      <td>${item.faltas}</td>
+      <td class="${item.situacao.classe}">${item.situacao.texto}</td>
+    `;
+
+    corpo.appendChild(linha);
+  });
+}
+
+/* ---------------------------------------------------------
+   FUNÇÃO: criarCard
+--------------------------------------------------------- */
+function criarCard(titulo, valor, classeExtra) {
+  const classe = classeExtra ? "card " + classeExtra : "card";
+  return `
+    <div class="${classe}">
+      <h3>${titulo}</h3>
+      <div class="valor">${valor}</div>
     </div>
-  </section>
+  `;
+}
 
-  <!-- RODAPÉ -->
-  <footer class="rodape">
-    <p>Projeto escolar — dados fictícios para demonstração.</p>
-  </footer>
+/* ---------------------------------------------------------
+   FUNÇÃO: preencherResumo
+--------------------------------------------------------- */
+function preencherResumo(dados) {
+  const area = document.getElementById("areaResumo");
 
-  <!-- Conecta o JavaScript no final para garantir que o HTML já carregou -->
-  <script src="script.js"></script>
-</body>
-</html>
+  // Média geral
+  const mediasValidas = dados
+    .map(function (d) { return d.media; })
+    .filter(function (m) { return m !== null; });
+
+  let mediaGeral = null;
+  if (mediasValidas.length > 0) {
+    let soma = 0;
+    mediasValidas.forEach(function (m) { soma += m; });
+    mediaGeral = soma / mediasValidas.length;
+  }
+
+  // Total de faltas
+  let totalFaltas = 0;
+  dados.forEach(function (d) { totalFaltas += d.faltas; });
+
+  // Contagem por situação
+  let bomDesempenho = 0;
+  let atencao = 0;
+
+  dados.forEach(function (d) {
+    if (d.situacao.texto === "Bom desempenho") bomDesempenho++;
+    if (d.situacao.texto === "Atenção") atencao++;
+  });
+
+  // Frequência FICTÍCIA de 92% (apenas demonstração)
+  // ATENÇÃO: valor ilustrativo; será tratado de outra forma no futuro.
+  const frequenciaFicticia = "92%";
+
+  let html = "";
+  html += criarCard("Média Geral", mediaGeral !== null ? mediaGeral.toFixed(1).replace(".", ",") : "—");
+  html += criarCard("Total de Faltas", totalFaltas);
+  html += criarCard("Bom Desempenho", bomDesempenho + " disciplinas");
+  html += criarCard("Precisam de Atenção", atencao + " disciplinas", atencao > 0 ? "atencao" : "");
+  html += criarCard("Frequência", frequenciaFicticia + " — adequada");
+
+  area.innerHTML = html;
+}
+
+/* ---------------------------------------------------------
+   INICIALIZAÇÃO
+--------------------------------------------------------- */
+preencherResumo(dadosProcessados);
+preencherTabela(dadosProcessados);
