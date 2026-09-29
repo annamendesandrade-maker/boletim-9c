@@ -1,0 +1,180 @@
+/* ===== VARIÁVEIS DE COR (facilita trocar depois) ===== */
+:root {
+  --cor-principal: #ff8c00;      /* laranja */
+  --cor-secundaria: #ff6b6b;     /* vermelho suave */
+  --cor-fundo: #121212;          /* fundo escuro */
+  --cor-card: #1e1e1e;           /* fundo dos cards */
+  --cor-borda: #2c2c2c;          /* bordas discretas */
+  --cor-texto: #f0f0f0;          /* texto claro */
+  --cor-texto-suave: #a0a0a0;    /* texto de apoio */
+}
+
+/* ===== RESET BÁSICO ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.5;
+  padding: 20px;
+}
+
+/* ===== CABEÇALHO ===== */
+.cabecalho {
+  text-align: center;
+  padding: 24px 12px;
+  border-bottom: 2px solid var(--cor-principal);
+  margin-bottom: 24px;
+}
+
+.cabecalho h1 {
+  font-size: 2rem;
+  color: var(--cor-principal);
+  letter-spacing: 1px;
+}
+
+.subtitulo {
+  color: var(--cor-texto-suave);
+  font-size: 1rem;
+  margin-top: 6px;
+}
+
+/* ===== ÁREA DOS CARDS DE RESUMO ===== */
+.resumo {
+  display: grid;
+  /* No celular fica 1 coluna; no computador vira várias */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+/* Cada card individual */
+.card {
+  background-color: var(--cor-card);
+  border-radius: 12px;                /* cantos arredondados */
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* sombra suave */
+  border-left: 5px solid var(--cor-principal); /* faixa laranja */
+}
+
+.card h3 {
+  font-size: 0.9rem;
+  color: var(--cor-texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.card .valor {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--cor-principal);
+}
+
+/* Card de "atenção" usa cor secundária (vermelho) */
+.card.atencao {
+  border-left-color: var(--cor-secundaria);
+}
+
+.card.atencao .valor {
+  color: var(--cor-secundaria);
+}
+
+/* ===== TABELA ===== */
+.tabela-container h2 {
+  color: var(--cor-principal);
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+}
+
+/* Permite rolar a tabela na horizontal em telas pequenas */
+.tabela-scroll {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--cor-borda);
+}
+
+table.boletim {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px; /* força scroll em telas pequenas */
+  background-color: var(--cor-card);
+}
+
+table.boletim th,
+table.boletim td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--cor-borda);
+  font-size: 0.9rem;
+}
+
+table.boletim th {
+  background-color: #262626;
+  color: var(--cor-principal);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+table.boletim tbody tr:hover {
+  background-color: #232323;
+}
+
+/* Cores da coluna "Situação" */
+.situacao-bom {
+  color: #4ade80; /* verde suave */
+  font-weight: bold;
+}
+
+.situacao-atencao {
+  color: var(--cor-secundaria);
+  font-weight: bold;
+}
+
+.situacao-indisponivel {
+  color: var(--cor-texto-suave);
+  font-style: italic;
+}
+
+/* Texto de "Ainda não lançada" nas notas */
+.nota-vazia {
+  color: var(--cor-texto-suave);
+  font-style: italic;
+}
+
+/* ===== RODAPÉ ===== */
+.rodape {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--cor-borda);
+  color: var(--cor-texto-suave);
+  font-size: 0.85rem;
+}
+
+/* ===== AJUSTES PARA CELULAR ===== */
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  .cabecalho h1 {
+    font-size: 1.5rem;
+  }
+
+  .card .valor {
+    font-size: 1.3rem;
+  }
+
+  table.boletim th,
+  table.boletim td {
+    padding: 8px 6px;
+    font-size: 0.8rem;
+  }
+}
